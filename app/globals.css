@@ -1,0 +1,319 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+:root {
+  --color-primary: #6366f1;
+  --color-dark: #131313;
+  --color-neutral-100: #f5f5f5;
+  --color-neutral-200: #e5e5e5;
+  --color-neutral-300: #d4d4d4;
+  --color-neutral-800: #262626;
+  --size-container: 1400px;
+  --container-padding: 2em;
+  --section-padding: 4em;
+  --gap: 1.5em;
+  --cubic-default: cubic-bezier(0.65, 0.05, 0, 1);
+}
+
+/* Tailwind v4 theme tokens — gives us utilities like bg-dark, text-primary,
+   bg-background and feeds var(--color-background) to the polaroid carousel. */
+@theme {
+  --color-primary: #6366f1;
+  --color-dark: #131313;
+  --color-background: #efece6;
+  --color-foreground: #161513;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-serif: ui-serif, Georgia, "Times New Roman", serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Lock page scroll while the fullscreen kinetic menu is open */
+html:has([data-nav="open"]) {
+  overflow: hidden;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+/* ================================================================
+   Sterling Gate — Kinetic Navigation (component stylesheet)
+   Class names match components/ui/sterling-gate-kinetic-navigation.tsx
+   ================================================================ */
+
+.site-header-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 60;
+  pointer-events: none;
+}
+
+/* Blend keeps logo/button legible over the light page AND the dark menu panel */
+.site-header-wrapper .header {
+  color: #fff;
+  mix-blend-mode: difference;
+}
+
+.container.is--full {
+  width: 100%;
+  max-width: var(--size-container);
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 3vw, var(--container-padding));
+}
+
+.nav-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: 1.35rem;
+  pointer-events: none;
+}
+
+.nav-row > * {
+  pointer-events: auto;
+}
+
+.nav-row__right {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+}
+
+.nav-logo-row {
+  text-decoration: none;
+  color: inherit;
+}
+
+.nav-logo-text {
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: -0.03em;
+}
+
+.nav-logo-accent {
+  color: var(--color-primary);
+  font-size: 0.7em;
+  vertical-align: super;
+  margin-left: 0.15em;
+}
+
+.nav-toggle-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  opacity: 0.55;
+  transition: opacity 0.3s ease;
+  user-select: none;
+}
+
+.nav-toggle-label:hover {
+  opacity: 1;
+}
+
+/* Menu / Close button with the rolling text swap */
+.nav-close-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  background: none;
+  border: 0;
+  padding: 0;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+}
+
+.menu-button-text {
+  display: flex;
+  flex-direction: column;
+  height: 1.25em;
+  overflow: hidden;
+  text-align: left;
+}
+
+.menu-button-text .p-large {
+  margin: 0;
+  line-height: 1.25em;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.icon-wrap {
+  width: 0.85em;
+  height: 0.85em;
+  display: grid;
+  place-items: center;
+}
+
+.menu-button-icon {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Fullscreen menu scaffold (layer above the page, below the blended header) */
+.fullscreen-menu-container {
+  position: relative;
+  height: 0;
+}
+
+.nav-overlay-wrapper {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(19, 19, 19, 0.35);
+  cursor: pointer;
+}
+
+/* The sliding panel */
+.menu-content {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: min(600px, 100%);
+  color: var(--color-neutral-100);
+}
+
+.menu-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* Three stacked layers wipe in with a stagger: indigo → neutral → dark */
+.backdrop-layer {
+  position: absolute;
+  inset: 0;
+  background: var(--color-dark);
+}
+
+.backdrop-layer.second {
+  background: var(--color-neutral-800);
+}
+
+.backdrop-layer.first {
+  background: var(--color-primary);
+}
+
+/* Ambient SVG shapes, revealed per hovered link */
+.ambient-background-shapes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.bg-shape {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.bg-shape.active {
+  opacity: 1;
+}
+
+.shape-element {
+  transform-box: fill-box;
+  transform-origin: center;
+  will-change: transform, opacity;
+}
+
+/* Giant masked links */
+.menu-content-wrapper {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 6rem clamp(2rem, 5vw, 4rem) 3rem;
+}
+
+.menu-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.menu-list-item {
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-link {
+  position: relative;
+  display: block;
+  width: 100%;
+  text-decoration: none;
+  color: var(--color-neutral-100);
+  padding: 0.45rem 1rem;
+  border-radius: 1.25rem;
+}
+
+.nav-link-text {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-size: clamp(2.1rem, 4.5vw, 3.4rem);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  transition: transform 0.5s var(--cubic-default), color 0.3s ease;
+  will-change: transform;
+}
+
+.nav-link:hover .nav-link-text {
+  transform: translateX(1rem);
+}
+
+.nav-link-hover-bg {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 1.25rem;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.55s var(--cubic-default);
+}
+
+.nav-link:hover .nav-link-hover-bg {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+@media (max-width: 640px) {
+  .nav-toggle-label {
+    display: none;
+  }
+
+  .menu-content {
+    width: 100%;
+  }
+}
