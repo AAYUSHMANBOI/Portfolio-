@@ -149,11 +149,21 @@ export function CursorDrivenParticleTypography({
             canvas.style.width = `${containerWidth}px`;
             canvas.style.height = `${containerHeight}px`;
 
+            // Reset any transform from a previous init() before re-scaling,
+            // otherwise re-inits (resize, theme change) accumulate scale.
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
             ctx.scale(dpr, dpr);
 
-            // Determine text color
+            // Determine text color — prefer the theme CSS variable on <html>:
+            // custom properties flip atomically on theme change, whereas the
+            // inherited computed color is still mid-`transition` and would
+            // give us an interpolated (e.g. dark-on-dark) value.
             const computedStyle = window.getComputedStyle(container);
-            const textColor = color || computedStyle.color || "#000000";
+            const themeColor = window
+                .getComputedStyle(document.documentElement)
+                .getPropertyValue("--color-foreground")
+                .trim();
+            const textColor = color || themeColor || computedStyle.color || "#000000";
 
             ctx.clearRect(0, 0, containerWidth, containerHeight);
 

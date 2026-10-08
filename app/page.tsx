@@ -2,7 +2,7 @@ import ImmersiveFullscreenNav from "@/components/ui/immersive-full-screen-nav";
 import PolaroidLineCarousel, {
   type Slide,
 } from "@/components/ui/polaroid-line-carousel";
-import { CursorDrivenParticleTypography } from "@/components/ui/cursor-driven-particle-typography";
+import { HeroParticleName } from "@/components/hero-particle-name";
 import {
   Link000,
   Link001,
@@ -77,9 +77,7 @@ export default function Home() {
           ],
           images: [
             U("1522778119026-d647f0596c20", 1200),
-            U("1551958219-acbc608c6377", 1200),
             U("1498050108023-c5249f4df085", 1200),
-            U("1574629810360-7efbbe195018", 1200),
           ],
           socials: [
             { type: "github", href: "https://github.com/AAYUSHMANBOI" },
@@ -92,18 +90,12 @@ export default function Home() {
 
       {/* Hero — cursor-reactive particle typography + the central thought */}
       <section className="relative flex h-[100svh] w-full flex-col items-center justify-center">
-        <CursorDrivenParticleTypography
-          text="AAYUSHMAN"
-          fontSize={170}
-          particleSize={1.8}
-          particleDensity={5}
-          className="absolute inset-0 touch-pan-y"
-        />
+        <HeroParticleName />
         <div className="pointer-events-none absolute inset-x-0 bottom-16 flex flex-col items-center gap-4 px-6 text-center">
           <p className="font-serif text-2xl italic tracking-tight sm:text-3xl md:text-4xl">
             &ldquo;What if we could make this better?&rdquo;
           </p>
-          <p className="text-[11px] uppercase tracking-[0.4em] text-foreground/50">
+          <p className="text-[10px] uppercase tracking-[0.28em] text-foreground/50 sm:text-[11px] sm:tracking-[0.4em]">
             The thought behind everything I build
           </p>
         </div>
@@ -160,10 +152,11 @@ export default function Home() {
       </section>
 
       {/* Work — polaroid line carousel */}
-      <section id="work" className="relative">
+      <section id="work" className="relative text-[#8a7f72] dark:text-[#9a9188]">
         <PolaroidLineCarousel
           slides={WORK_SLIDES}
           ariaLabel="Selected moments — photography prints"
+          string="currentColor"
         />
       </section>
 

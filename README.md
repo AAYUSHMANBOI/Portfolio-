@@ -30,6 +30,16 @@ npm run build    # production build (type-checks everything)
 
 > Note: `node_modules` is git-ignored — run `npm install` after every fresh clone.
 
+### Visual QA loop
+
+A scratch Playwright runner captures every section in light, dark and a
+390px mobile pass (output in `shots/`, gitignored):
+
+```bash
+npm install --no-save playwright-core @sparticuz/chromium
+node scripts/shots.mjs mylabel   # → shots/mylabel/*.png
+```
+
 ## Project layout
 
 ```

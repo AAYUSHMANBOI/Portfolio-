@@ -662,7 +662,7 @@ function CustomNavbar({
       <div className="flex items-center justify-between gap-10 max-[1025px]:flex-col max-[1025px]:items-start max-[1025px]:gap-18">
         <div className="flex flex-col gap-0">
           {links.map((link, index) => (
-            <div key={link.label} ref={setLinkRef(index)} className="z-[60] text-[6vw] max-[1025px]:text-[7vw]" style={{ opacity: 0, transform: `translateY(${linkOffsetY}px)` }}>
+            <div key={link.label} ref={setLinkRef(index)} className="z-[60] text-[clamp(2.75rem,4.5vw,6rem)] max-[1025px]:text-[7vw]" style={{ opacity: 0, transform: `translateY(${linkOffsetY}px)` }}>
               <NavLinkHover label={link.label} href={link.href} charStagger={linkCharStagger} reduced={isReducedMotion} />
             </div>
           ))}
@@ -675,7 +675,7 @@ function CustomNavbar({
                 key={index}
                 ref={setImageRef(index)}
                 style={{ opacity: 0, transform: `scale(${IMAGE_INITIAL_SCALE})` }}
-                className="relative h-[18vw] w-[25vw] overflow-hidden rounded-xl max-[1025px]:h-[30vw] max-[1025px]:w-[60vw] max-[1025px]:rounded-md"
+                className="relative h-[18vw] w-[25vw] overflow-hidden rounded-xl max-[1500px]:h-[16vw] max-[1500px]:w-[22vw] max-[1025px]:h-[30vw] max-[1025px]:w-[60vw] max-[1025px]:rounded-md"
               >
                 <img src={src} alt={`Overlay image ${index + 1}`} className="absolute inset-0 h-full w-full object-cover transition duration-500 hover:scale-105 motion-reduce:scale-100 motion-reduce:transition-none motion-reduce:hover:scale-100" />
               </div>

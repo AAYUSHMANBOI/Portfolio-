@@ -15,7 +15,7 @@ export default function PlaygroundSection() {
         <PixelTrail
           pixelSize={screenSize.lessThan("md") ? 16 : 24}
           fadeDuration={500}
-          pixelClassName="bg-white"
+          pixelClassName="bg-primary"
         />
       </div>
 
